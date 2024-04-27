@@ -1,0 +1,68 @@
+:root {
+    --cor-primaria: #6AF588;
+    --cor-secundaria:   #E2E2E2;
+    --cor-tercearia: #FAFF00;
+    --btn-primary: rgb(240, 99, 99);
+  }
+
+  .container-fluid{
+    background-color: #6AF588;
+  }
+
+  h1,h2,h3,h4,h5{
+    color: var(--cor-primaria);
+  }
+  
+  label{
+    color: rgb(129, 129, 129);
+  }
+  
+  a{
+    color: rgb(129, 129, 129);
+  }
+  
+  .backgroundLogin{
+    background-color: #E2E2E2;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-control{
+    color: var(--cor-primaria);
+    padding: 0.6rem;
+    border: #6AF588 1px solid;
+  }
+  
+  .form-control:focus{
+  }
+
+  .btn{
+    padding: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+ 
+  .btn-primary{
+    background-color: transparent;
+    border: #6AF588 1px solid;
+    color: rgb(37, 37, 37);
+  }
+
+  .btn-primary:hover{
+    background-color: #6AF588;
+    border: #6AF588 1px solid;
+    color: white;
+
+  }
+
+  .btn-primary:focus{
+    background-color: #6AF588;
+    border: #6AF588 1px solid;
+    color: white;
+  }
+
+  .btn-secondary{
+    background-color: #6AF588;
+    border: #6AF588 1px solid;
+    color: white;
+  }

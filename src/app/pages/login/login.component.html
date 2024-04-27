@@ -1,0 +1,91 @@
+<div class="container-fluid">
+  <div class="row justify-content-center align-items-center">
+    <!-- Formulário de login -->
+    <div class="col-md-4">
+      <div class="col-md-12 backgroundLogin row rounded-4">
+        <div class="text-center p-5"><img src="../../../assets/logoCodeQuest.png" alt="" width="150"></div>
+        <!-- Formulário de login -->
+        <div class="col-md-12 p-5" *ngIf="currentForm === 'login'">
+          
+          <h2 class="secondary-color mb-5">Faça o seu login</h2>
+          <form class="col-md-22">
+            <!-- Seu formulário de login -->
+            <!-- Adicione a lógica de login aqui -->
+
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Login</label>
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Senha</label>
+              <input type="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block col-md-12" >Entrar</button>
+            <button class="btn btn-secondary btn-block col-md-12" (click)="toggleForm('register')">Cadastrar</button>
+            <br>
+            <a href="#" (click)="toggleForm('forgot')">Esqueci minha senha</a>
+          </form>
+        </div>
+        
+        <!-- Formulário de registro -->
+        <div class="col-md-6 p-5" *ngIf="currentForm === 'register'">
+          <h2 class="secondary-color mb-5">Cadastre-se</h2>
+          <form class="col-md-12">
+            <!-- Seu formulário de registro -->
+            <!-- Adicione a lógica de registro aqui -->
+
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Nome Completo</label>
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Login</label>
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Email</label>
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Senha</label>
+              <input type="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label"> Confirmar Senha</label>
+              <input type="password" class="form-control" id="exampleInputPassword1">
+            </div>
+
+            <a href="#" (click)="toggleForm('login')">Já tenho uma conta</a>
+            <br>
+            <button type="submit" class="btn btn-primary btn-block col-md-12" >Cadastrar</button>
+            <br>
+            <a href="#" (click)="toggleForm('forgot')">Esqueci minha senha</a>
+          </form>
+        </div>
+
+        <!-- Formulário de "Esqueci minha senha" -->
+        <div class="col-md-6 p-5" *ngIf="currentForm === 'forgot'">
+          <img src="../../../assets/logoCodeQuest.png" alt="" width="150">
+          <h2 class="secondary-color mb-5">Esqueci minha senha</h2>
+          <form class="col-md-12">
+            <!-- Seu formulário de "Esqueci minha senha" -->
+            <!-- Adicione a lógica de recuperação de senha aqui -->
+
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Email</label>
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Confirmar Email</label>
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block col-md-12" >Enviar</button>
+            <br>
+            <a href="#" (click)="toggleForm('login')">Voltar ao login</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
