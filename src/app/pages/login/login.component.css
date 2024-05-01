@@ -1,17 +1,21 @@
-  h1,h2,h3,h4,h5{
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
     color: var(--cor-primaria);
   }
-  
-  label{
+
+  label {
     color: rgb(129, 129, 129);
   }
-  
-  a{
+
+  a {
     color: rgb(129, 129, 129);
     text-decoration: none;
   }
- 
-  .form-control{
+
+  .form-control {
     background-color: transparent;
     color: var(--cor-primaria);
     padding: 0.6rem;
@@ -24,34 +28,41 @@
     background-color: transparent;
     border-bottom: #6AF588;
     box-shadow: 0 0 0 .25rem #6AF588;
-}
-  
-  .btn{
+  }
+
+  .btn {
     padding: 10px;
     font-size: 1.1rem;
     font-weight: 600;
   }
- 
-  .btn-primary{
+
+  .btn-primary {
     background-color: transparent;
     border: #6AF588 1px solid;
     color: rgb(37, 37, 37);
   }
 
-  .btn-primary:hover{
+  .btn-primary:active {
+    background-color: #5cd877;
+    border: #5cd877 1px solid;
+    color: white;
+  }
+
+
+  .btn-primary:hover {
     background-color: #6AF588;
     border: #6AF588 1px solid;
     color: white;
 
   }
 
-  .btn-secondary{
+  .btn-secondary {
     background-color: #6AF588;
     border: #6AF588 1px solid;
     color: white;
   }
 
-  .btn-secondary:active{
+  .btn-secondary:active {
     background-color: #5cd877;
     border: #6AF588 1px solid;
     color: white;
@@ -59,41 +70,42 @@
 
   @media screen and (max-width: 767px) {
     .btn-block {
-      width: 100%; /* Faz o botão ocupar 100% do espaço disponível */
+      width: 100%;
+      /* Faz o botão ocupar 100% do espaço disponível */
     }
   }
 
-   .containerLogin {
+  .containerLogin {
     background-color: #E2E2E2;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-   }
-   
-   .container-fluid {
+  }
+
+  .container-fluid {
     background-color: #6AF588;
-   }
+  }
 
   input[type="password"]::-ms-reveal,
   input[type="password"]::-ms-clear,
   input[type="password"]::-webkit-contacts-auto-fill-button,
   input[type="password"]::-webkit-credentials-auto-fill-button {
-      display: none !important;
-}
+    display: none !important;
+  }
 
-.mostrarSenha{
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: 2px solid #6AF588;
-  background-color: transparent;
-}
+  .mostrarSenha {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid #6AF588;
+    background-color: transparent;
+  }
 
-.mostrarSenha:active{
-  background-color: transparent;
-  border-bottom: 2px solid #6AF588;
-}
+  .mostrarSenha:active {
+    background-color: transparent;
+    border-bottom: 2px solid #6AF588;
+  }
 
-.fas.fa-eye-slash {
-  color: red; /* Define a cor do ícone como vermelho */
-}
-
+  .fas.fa-eye-slash {
+    color: red;
+    /* Define a cor do ícone como vermelho */
+  }
