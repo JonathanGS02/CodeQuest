@@ -8,6 +8,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './pages/home/home.component';
 import { CompareToDirective } from './compare-validator.directive';
+import { NavComponent } from './component/nav/nav.component';
+import { FooterComponent } from './component/footer/footer.component';
+import { MinhaContaComponent } from './pages/minha-conta/minha-conta.component';
+
 
 @NgModule({
   declarations: [
@@ -15,6 +19,9 @@ import { CompareToDirective } from './compare-validator.directive';
     LoginComponent,
     CompareToDirective,
     HomeComponent,
+    NavComponent,
+    FooterComponent,
+    MinhaContaComponent,
   ],
   imports: [
     BrowserModule,

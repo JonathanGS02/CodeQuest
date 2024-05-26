@@ -1,0 +1,28 @@
+.bg-body-tertiary {
+    --bs-bg-opacity: 1;
+    background-color: #6AF588 !important;
+}
+
+.nav-link, 
+.nav-link.active{
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-size: 1em; /* Ajuste o tamanho conforme necessário */
+}
+
+.navbar {
+    padding: 20px;
+}
+
+.btn{
+    border-radius: 100%;
+    padding: 10px;
+}
+
+.custom-dropdown-menu {
+    max-height: none !important; /* Remova a altura máxima */
+    width: auto !important; /* Defina a largura automática */
+    left: unset !important; /* Remova o posicionamento esquerdo */
+    right: 0 !important; /* Posicione o dropdown no lado direito */
+    transform: none !important; /* Remova qualquer transformação */
+  }
