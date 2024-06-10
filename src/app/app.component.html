@@ -1,3 +1,6 @@
-<app-nav *ngIf="!isLoginPage"></app-nav>
-<router-outlet></router-outlet>
-<app-footer *ngIf="!isLoginPage"></app-footer>
+<div class="app-container">
+    <app-loader></app-loader> 
+    <app-nav *ngIf="!isLoginPage"></app-nav>
+    <router-outlet></router-outlet>
+    <app-footer *ngIf="!isLoginPage"></app-footer>
+</div>

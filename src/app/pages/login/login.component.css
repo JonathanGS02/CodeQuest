@@ -1,110 +1,71 @@
-  h1,
-  h2,
-  h3,
-  h4,
-  h5 {
-    color: var(--cor-primaria);
-  }
+.container-fluid{
+  background-color: #6AF588;
+}
 
-  label {
-    color: rgb(129, 129, 129);
-  }
+.containerLogin {
+  background-color: #D9D9D9; /* Mantém a cor original */
+  color: #303030; /* Mantém a cor original do texto */
+  padding: 60px !important;
+  border-radius: 8px;
+  width: 600px; /* Aumenta a largura do container */
+}
 
-  a {
-    color: rgb(129, 129, 129);
-    text-decoration: none;
-  }
+.btn-block {
+  width: 100%;
+}
 
-  .form-control {
-    background-color: transparent;
-    color: var(--cor-primaria);
-    padding: 0.6rem;
-    border-bottom: #6AF588 2px solid;
+a {
+  color: #007bff;
+}
 
-  }
-
-  .form-control:focus {
-    color: none;
-    background-color: transparent;
-    border-bottom: #6AF588;
-    box-shadow: 0 0 0 .25rem #6AF588;
-  }
-
-  .btn {
-    font-size: 1.1rem;
-    font-weight: 600;
-  }
-
-  .btn-primary {
-    background-color: transparent;
-    border: #6AF588 1px solid;
-    color: rgb(37, 37, 37);
-  }
-
-  .btn-primary:active {
-    background-color: #5cd877;
-    border: #5cd877 1px solid;
-    color: white;
-  }
+a:hover {
+  color: #0056b3;
+  text-decoration: none;
+}
 
 
-  .btn-primary:hover {
-    background-color: #6AF588;
-    border: #6AF588 1px solid;
-    color: white;
+.btn-primary{
+  background-color: #6AF588;
+  border-color: #6AF588;
+}
 
-  }
+.btn-primary:active{
+  background-color: #5acf73;
+  border-color: #5acf73;
+}
 
-  .btn-secondary {
-    background-color: #6AF588;
-    border: #6AF588 1px solid;
-    color: white;
-  }
+input[type="password"]::-ms-reveal {
+  display: none;
+}
 
-  .btn-secondary:active {
-    background-color: #5cd877;
-    border: #6AF588 1px solid;
-    color: white;
-  }
+/* Esconde o ícone padrão de "ver senha" em navegadores baseados em WebKit */
+input[type="password"]::-webkit-textfield-decoration-container {
+  display: none;
+}
 
-  @media screen and (max-width: 767px) {
-    .btn-block {
-      width: 100%;
-      /* Faz o botão ocupar 100% do espaço disponível */
-    }
-  }
+/* Estiliza o container do input para posicionar o ícone do Font Awesome */
+.input-group {
+  position: relative;
+}
 
-  .containerLogin {
-    background-color: #E2E2E2;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-  }
 
-  .container-fluid {
-    background-color: #6AF588;
-  }
+.input-group input {
+  padding-right: 40px; /* Espaço para o ícone */
+}
 
-  input[type="password"]::-ms-reveal,
-  input[type="password"]::-ms-clear,
-  input[type="password"]::-webkit-contacts-auto-fill-button,
-  input[type="password"]::-webkit-credentials-auto-fill-button {
-    display: none !important;
-  }
+/* Ajusta o padding e o tamanho do ícone */
+.input-group .fa-icon {
+  padding: 8px;
+  background: #fff; /* Fundo branco para o ícone */
+  border-radius: var(--bs-border-radius)
+}
 
-  .mostrarSenha {
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: 2px solid #6AF588;
-    background-color: transparent;
-  }
+.eye-slash-red {
+  color: red;
+}
 
-  .mostrarSenha:active {
-    background-color: transparent;
-    border-bottom: 2px solid #6AF588;
-  }
-
-  .fas.fa-eye-slash {
-    color: red;
-    /* Define a cor do ícone como vermelho */
-  }
+.text-danger {
+  color: red;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+}

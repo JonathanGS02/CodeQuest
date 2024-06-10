@@ -1,131 +1,112 @@
-<div class="container-fluid col-md-12">
+<div class="container-fluid">
   <div class="d-flex align-items-center justify-content-center vh-100">
-    <div class="containerLogin col-md-4 p-4">
-      <div class="text-center p-4"><img src="../../../assets/logoCodeQuest.svg" alt="" width="200"></div>
-      <form class="" *ngIf="currentForm === 'login'" (ngSubmit)="submitForm('login', loginForm)" #loginForm="ngForm" id="login">
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Email</label>
-          <input type="email" class="form-control" name="username" placeholder="Digite o E-mail" required
-            [(ngModel)]="username" />
-          <div
-            *ngIf="loginForm.controls['username']?.invalid && (loginForm.controls['username']?.dirty || loginForm.controls['username']?.touched)">
-            <div class="text-danger" *ngIf="loginForm.controls['username']?.errors?.['required']">O email é obrigatório.
-            </div>
-            <div class="text-danger" *ngIf="loginForm.controls['username']?.errors?.['email']">Por favor, insira um
-              email válido.</div>
-          </div>
+    <div class="containerLogin rounded">
+      <div class="text-center mb-4">
+        <img src="../../../assets/logoCodeQuest.svg" alt="Logo" width="300">
+      </div>
+      <form *ngIf="currentForm === 'login'" (ngSubmit)="submitForm('login', loginForm)" #loginForm="ngForm" id="login">
+        <div class="d-flex justify-content-center mb-3">
+          <button type="button" class="btn btn-primary mx-2" (click)="navigateTo('login')">Entrar</button>
+          <button type="button" class="btn btn-secondary mx-2" (click)="navigateTo('register')">Cadastrar</button>
         </div>
         <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Senha</label>
-          <div class="input-group">
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="XXXXXXXXX"
-              [type]="passwordHidden ? 'password' : 'text'" name="password" required [(ngModel)]="password" />
-            <button class="btn btn-outline-secondary mostrarSenha" type="button" (click)="togglePassword()">
-              <i class="fas" [ngClass]="passwordHidden ? 'fa-eye' : 'fa-eye-slash'"></i>
-            </button>
-          </div>
-          <div
-            *ngIf="loginForm.controls['password']?.invalid && (loginForm.controls['password']?.dirty || loginForm.controls['password']?.touched)">
-            <div class="text-danger" *ngIf="loginForm.controls['password']?.errors?.['required']">A senha é obrigatória.
-            </div>
+          <input type="email" class="form-control" name="username" placeholder="E-mail ou usuário" required [(ngModel)]="username">
+          <div *ngIf="loginForm.controls['username']?.invalid && (loginForm.controls['username']?.dirty || loginForm.controls['username']?.touched)" class="text-danger">
+            E-mail ou usuário é obrigatório.
           </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-block col-md-12" [disabled]="loginForm.invalid">Entrar</button>
-        <br>
-        <br>
-        <button class="btn btn-secondary btn-block col-md-12" (click)="toggleForm('register')">Cadastrar</button>
-        <br>
-        <br>
-        <a href="#" (click)="toggleForm('forgot')">Esqueci minha senha</a>
+        <div class="mb-3 input-group">
+          <input type="password" class="form-control" placeholder="Senha" [type]="passwordHidden ? 'password' : 'text'" name="password" required [(ngModel)]="password">
+          <fa-icon 
+            class="fa-icon" 
+            [icon]="passwordHidden ? faEye : faEyeSlash" 
+            (click)="togglePassword()" 
+            [ngClass]="{'eye-slash-red': !passwordHidden}">
+          </fa-icon>
+        </div>
+        <div *ngIf="loginForm.controls['password']?.invalid && (loginForm.controls['password']?.dirty || loginForm.controls['password']?.touched)" class="text-danger mb-3">
+          A senha é obrigatória.
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+          <div>
+            <input type="checkbox" name="remember" [(ngModel)]="remember"> Lembrar-me
+          </div>
+          <a routerLink="" (click)="navigateTo('forgot') ">Esqueceu a senha?</a>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mb-3" [disabled]="isLoading">
+          <ng-container *ngIf="!isLoading; else loadingTemplate">Entrar</ng-container>
+          <ng-template #loadingTemplate>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Carregando...
+          </ng-template>
+        </button>
       </form>
 
+      <!-- Formulário de Cadastro -->
       <form *ngIf="currentForm === 'register'" (ngSubmit)="submitForm('register', registerForm)" #registerForm="ngForm">
         <div class="mb-3">
-          <label for="exampleInputName" class="form-label">Nome Completo</label>
-          <input type="text" class="form-control" id="exampleInputName" aria-describedby="emailHelp" name="fullname"
-            required [(ngModel)]="fullname">
-          <div
-            *ngIf="registerForm.controls['fullname']?.invalid && (registerForm.controls['fullname']?.dirty || registerForm.controls['fullname']?.touched)">
-            <div class="text-danger" *ngIf="registerForm.controls['fullname']?.errors?.['required']">O nome completo é
-              obrigatório.</div>
+          <input type="text" class="form-control" placeholder="Nome Completo" name="fullname" required [(ngModel)]="fullname">
+          <div *ngIf="registerForm.controls['fullname']?.invalid && (registerForm.controls['fullname']?.dirty || registerForm.controls['fullname']?.touched)" class="text-danger">
+            O nome completo é obrigatório.
           </div>
         </div>
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Email</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email"
-            required [(ngModel)]="email">
-          <div
-            *ngIf="registerForm.controls['email']?.invalid && (registerForm.controls['email']?.dirty || registerForm.controls['email']?.touched)">
-            <div class="text-danger" *ngIf="registerForm.controls['email']?.errors?.['required']">O email é obrigatório.
-            </div>
-            <div *ngIf="registerForm.controls['email']?.errors?.['email']">Por favor, insira um email válido.</div>
+          <input type="email" class="form-control" placeholder="E-mail" name="email" required [(ngModel)]="email">
+          <div *ngIf="registerForm.controls['email']?.invalid && (registerForm.controls['email']?.dirty || registerForm.controls['email']?.touched)" class="text-danger">
+            E-mail válido é obrigatório.
           </div>
+        </div>
+        <div class="mb-3 input-group">
+          <input type="password" class="form-control" placeholder="Senha" [type]="passwordHidden ? 'password' : 'text'" name="password" required [(ngModel)]="password">
+          <fa-icon 
+            class="fa-icon" 
+            [icon]="passwordHidden ? faEye : faEyeSlash" 
+            (click)="togglePassword()" 
+            [ngClass]="{'eye-slash-red': !passwordHidden}">
+          </fa-icon>
+        </div>
+        <div *ngIf="registerForm.controls['password']?.invalid && (registerForm.controls['password']?.dirty || registerForm.controls['password']?.touched)" class="text-danger mb-3">
+          A senha é obrigatória.
         </div>
         <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Senha</label>
-          <div class="input-group">
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="XXXXXXXXX"
-              [type]="passwordHidden ? 'password' : 'text'" name="password" required [(ngModel)]="password">
-            <button class="btn btn-outline-secondary mostrarSenha" type="button" (click)="togglePassword()">
-              <i class="fas" [ngClass]="passwordHidden ? 'fa-eye' : 'fa-eye-slash'"></i>
-            </button>
-          </div>
-          <div
-            *ngIf="registerForm.controls['password']?.invalid && (registerForm.controls['password']?.dirty || registerForm.controls['password']?.touched)">
-            <div class="text-danger" *ngIf="registerForm.controls['password']?.errors?.['required']">A senha é
-              obrigatória.</div>
+          <input type="password" class="form-control" placeholder="Confirmar Senha" name="confirmPassword" required [(ngModel)]="confirmPassword" appCompareTo="password">
+          <div *ngIf="registerForm.controls['confirmPassword']?.invalid && (registerForm.controls['confirmPassword']?.dirty || registerForm.controls['confirmPassword']?.touched)" class="text-danger">
+            As senhas devem coincidir.
           </div>
         </div>
-        <div class="mb-3">
-          <label for="exampleInputConfirmPassword1" class="form-label">Confirmar Senha</label><input type="password"
-            class="form-control" id="exampleInputConfirmPassword1" name="confirmPassword" required
-            [(ngModel)]="confirmPassword" appCompareTo="password">
-          <div
-            *ngIf="registerForm.controls['confirmPassword']?.invalid && (registerForm.controls['confirmPassword']?.dirty || registerForm.controls['confirmPassword']?.touched)">
-            <div class="text-danger" *ngIf="registerForm.controls['confirmPassword']?.errors?.['required']">A
-              confirmação de senha é obrigatória.</div>
-            <div *ngIf="registerForm.controls['confirmPassword']?.errors?.['compareTo']" class="text-danger">As senhas
-              não coincidem.</div>
-          </div>
+        <button type="submit" class="btn btn-primary btn-block mb-3" [disabled]="isLoading">
+          <ng-container *ngIf="!isLoading; else loadingTemplate">Cadastrar</ng-container>
+          <ng-template #loadingTemplate>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Carregando...
+          </ng-template>
+        </button>
+        <div class="text-center">
+          Já é um membro? <a href="#" (click)="navigateTo('login')">Entrar</a>
         </div>
-        <button type="submit" class="btn btn-primary btn-block col-md-12"
-          [disabled]="registerForm.invalid">Cadastrar</button>
-        <br>
-        <br>
-        <button class="btn btn-secondary btn-block col-md-12" (click)="toggleForm('login')">Voltar</button>
       </form>
+
+      <!-- Formulário de Esqueci a Senha -->
       <form *ngIf="currentForm === 'forgot'" (ngSubmit)="submitForm('forgot', forgotForm)" #forgotForm="ngForm">
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Email</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email"
-            required [(ngModel)]="email">
-          <div
-            *ngIf="forgotForm.controls['email']?.invalid && (forgotForm.controls['email']?.dirty || forgotForm.controls['email']?.touched)">
-            <div class="text-danger" *ngIf="forgotForm.controls['email']?.errors?.['required']">O email é obrigatório.
-            </div>
-            <div class="text-danger" *ngIf="forgotForm.controls['email']?.errors?.['email']">Por favor, insira um email
-              válido.</div>
+          <input type="email" class="form-control" placeholder="E-mail" name="email" required [(ngModel)]="email">
+          <div *ngIf="forgotForm.controls['email']?.invalid && (forgotForm.controls['email']?.dirty || forgotForm.controls['email']?.touched)" class="text-danger">
+            E-mail válido é obrigatório.
           </div>
         </div>
         <div class="mb-3">
-          <label for="exampleInputConfirmEmail1" class="form-label">Confirmar Email</label>
-          <input type="email" class="form-control" id="exampleInputConfirmEmail1" aria-describedby="emailHelp"
-            name="confirmEmail" required [(ngModel)]="confirmEmail" [appCompareTo]="'email'">
-          <div
-            *ngIf="forgotForm.controls['confirmEmail']?.invalid && (forgotForm.controls['confirmEmail']?.dirty || forgotForm.controls['confirmEmail']?.touched)">
-            <div class="text-danger" *ngIf="forgotForm.controls['confirmEmail']?.errors?.['required']">A confirmação de
-              email é obrigatória.</div>
-            <div class="text-danger" *ngIf="forgotForm.controls['confirmEmail']?.errors?.['compareTo']">Os emails não
-              coincidem.</div>
+          <input type="email" class="form-control" placeholder="Confirmar E-mail" name="confirmEmail" required [(ngModel)]="confirmEmail" appCompareTo="email">
+          <div *ngIf="forgotForm.controls['confirmEmail']?.invalid && (forgotForm.controls['confirmEmail']?.dirty || forgotForm.controls['confirmEmail']?.touched)" class="text-danger">
+            Os e-mails devem coincidir.
           </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-block col-md-12"
-          [disabled]="forgotForm.invalid">Enviar</button>
-        <br>
-        <br>
-        <button class="btn btn-secondary btn-block col-md-12" (click)="toggleForm('login')">Voltar</button>
-        <br>
-        <br>
+        <button type="submit" class="btn btn-primary btn-block mb-3" [disabled]="isLoading">
+          <ng-container *ngIf="!isLoading; else loadingTemplate">Enviar</ng-container>
+          <ng-template #loadingTemplate>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Carregando...
+          </ng-template>
+        </button>
+        <div class="text-center">
+          <a href="#" (click)="navigateTo('login')">Voltar para Entrar</a>
+        </div>
       </form>
     </div>
   </div>

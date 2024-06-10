@@ -1,106 +1,66 @@
-<div class="container-fluid col-md-11 p-5">
-    <div class="row">
-      <div class="col col-md-12 mb-4 mb-lg-0">
-        <div class="card mb-3" style="border-radius: .5rem;">
-          <div class="row g-0">
-            <div class="col-md-4 gradient-custom text-center mx-auto mb-4"
-            style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
-            <h5>Nome</h5>
-            <p>Nivel</p>
-            <div class="container col-md-6">
-                <p class="justify-content-start d-flex">XP</p>
-            <div class="progress mx-auto" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar" style="width: 15%"></div>
-            </div>
-            </div>
+<div class="container-fluid p-5">
+  <div class="row">
+    <div class="col-md-12 mb-4 text-center">
+      <h2>Introdução a Programação</h2>
+    </div>
+
+    <div class="col-md-12 mb-4">
+      <div class="topic-level">
+        <div class="topic-card" *ngFor="let topic of topics" [class.disabled]="!isTopicUnlocked(topic)" (click)="openTopicModal(content, topic)">
+          <i class="fas fa-book topic-icon"></i>
+          <p>{{ topic.title }}</p>
         </div>
-            <div class="col-md-8">
-              <div class="card-body p-4">
-                <h6>Informações do usuário</h6>
-                <hr class="mt-0 mb-4">
-                <div class="row pt-1">
-                  <div class="col-6 mb-3">
-                    <h6>Email</h6>
-                    <p class="text-muted"></p>
-                  </div>
-                </div>
-                </div>
-               
-              </div>
-            </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 mb-4 text-center">
+      <h2>Estrutura de Controle</h2>
+    </div>
+
+    <div class="col-md-12 mb-4">
+      <div class="topic-level">
+        <div class="topic-card" *ngFor="let topic of additionalTopics" [class.disabled]="!isTopicUnlocked(topic)" (click)="openTopicModal(content, topic)">
+          <i class="fas fa-laptop-code topic-icon"></i>
+          <p>{{ topic.title }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 mb-4 text-center">
+      <h2>Funções</h2>
+    </div>
+
+    <div class="col-md-12 mb-4">
+      <div class="topic-level">
+        <div class="topic-card" *ngFor="let topic of moreTopics" [class.disabled]="!isTopicUnlocked(topic)" (click)="openTopicModal(content, topic)">
+          <i class="fas fa-book-open topic-icon"></i>
+          <p>{{ topic.title }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">{{ selectedTopic?.title }}</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <h6>Nível: {{ selectedTopic?.level }}</h6>
+      <div *ngIf="selectedTopic">
+        <div *ngFor="let question of selectedTopic.questions">
+          <h5>{{ question.text }}</h5>
+          <div *ngFor="let option of question.options" [ngClass]="{'incorrect': showFeedback && selectedQuestion === question && selectedOption === option && !isCorrectOption(question, option)}">
+            <input class="form-check-input" type="radio" name="question{{ question.id }}" [value]="option" (change)="selectOption(question, option)">
+            <label class="form-check-label">{{ option }}</label>
           </div>
         </div>
       </div>
-
-    <div class="card">
-        <h5 class="card-header p-3">Tópico: </h5>
-        <div class="card-body p-4">
-            <h5 class="card-title">Questão: </h5>
-            <div class="d-flex align-items-center p-2">
-                <label class="form-check-label me-2" for="exampleRadios2">
-                    a) 
-                </label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                </div>
-                <label for="exampleRadios2" class="form-check-label me-2">
-                    Resposta:
-                </label>
-            </div>
-
-            <div class="d-flex align-items-center p-2">
-                <label class="form-check-label me-2" for="exampleRadios2">
-                    b) 
-                </label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                </div>
-                <label for="exampleRadios2" class="form-check-label me-2">
-                    Resposta:
-                </label>
-            </div>
-
-            <div class="d-flex align-items-center p-2">
-                <label class="form-check-label me-2" for="exampleRadios2">
-                    c) 
-                </label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                </div>
-                <label for="exampleRadios2" class="form-check-label me-2">
-                    Resposta:
-                </label>
-            </div>
-
-            <div class="d-flex align-items-center p-2">
-                <label class="form-check-label me-2" for="exampleRadios2">
-                    d) 
-                </label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                </div>
-                <label for="exampleRadios2" class="form-check-label me-2">
-                    Resposta:
-                </label>
-            </div>
-
-            <div class="d-flex align-items-center p-2">
-                <label class="form-check-label me-2" for="exampleRadios2">
-                    f) 
-                </label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                </div>
-                <label for="exampleRadios2" class="form-check-label me-2">
-                    Resposta:
-                </label>
-            </div>
-
-            <div class="d-flex justify-content-end mt-4">
-                <button class="btn btn-primary" type="button">Concluir</button>
-            </div>
-        </div>
     </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Close click')">Fechar</button>
+      <button type="button" class="btn btn-primary" (click)="completeTopic()">Concluir</button>
+    </div>
+  </ng-template>
 </div>

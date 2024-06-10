@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router'; // Importe o serviço Router
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,12 +15,17 @@ export class LoginComponent {
   password: string = '';
   confirmPassword: string = '';
   username: string = ''; 
+  remember: boolean = false;
+  isLoading: boolean = false;
 
-  constructor(private router: Router) { } // Injete o serviço Router
+  // Propriedades FontAwesome
+  faEye = 'eye';
+  faEyeSlash = 'eye-slash';
+
+  constructor(private router: Router) { } // Injete o serviço de loading
 
   toggleForm(form: 'login' | 'register' | 'forgot') {
     this.currentForm = form;
-    // Limpar os campos quando o formulário for alterado
     this.clearFields();
   }
 
@@ -28,32 +33,27 @@ export class LoginComponent {
     this.passwordHidden = !this.passwordHidden;
   }
 
+  navigateTo(form: 'login' | 'register' | 'forgot') {
+    this.currentForm = form;
+  }
+
   submitForm(formType: 'login' | 'register' | 'forgot', form: any) {
     if (form.valid) {
       console.log('Formulário válido. Enviando...');
 
-      if (formType === 'register') {
-        // Navegar para a tela de login após enviar o formulário de cadastro com sucesso
-        this.currentForm = 'login';
-        this.clearFields();
-      } 
-
-      if (formType === 'login') {
-        // Lidar com o envio do formulário de login
-        this.router.navigate(['/home']);
-        this.clearFields();
-      }
-
-      if(formType === 'forgot') {
-        this.currentForm = 'login';
-        this.clearFields();
-      }
-    } 
+      setTimeout(() => {
+        if (formType === 'register' || formType === 'forgot') {
+          this.currentForm = 'login';
+          this.clearFields();
+        } else if (formType === 'login') {
+          this.router.navigate(['/home']);
+          this.clearFields();
+        }
+      }, 2000); // Simulação de tempo de processamento
+    }
   }
-  
 
   clearFields() {
-    // Limpar os campos do formulário
     this.fullname = '';
     this.email = '';
     this.confirmEmail = '';

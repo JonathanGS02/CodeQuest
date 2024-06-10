@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { MinhaContaComponent } from './pages/minha-conta/minha-conta.component';
+import { LoaderComponent } from './loader/loader.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redireciona a rota raiz para login
