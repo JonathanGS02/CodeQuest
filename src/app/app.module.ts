@@ -13,6 +13,8 @@ import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontaweso
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoaderModule } from './loader/loader.module'; 
+import { UserService } from './services/user.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,6 @@ import { LoaderModule } from './loader/loader.module';
     FooterComponent,
     MinhaContaComponent,
     LoginComponent,
-    // Remover LoaderComponent daqui
   ],
   imports: [
     BrowserModule,
@@ -32,9 +33,11 @@ import { LoaderModule } from './loader/loader.module';
     FormsModule,
     NgbModule,
     FontAwesomeModule,
-    LoaderModule // Importar o LoaderModule
+    LoaderModule,
+    HttpClientModule,
   ],
   providers: [
+    UserService,
     provideClientHydration()
   ],
   bootstrap: [AppComponent]

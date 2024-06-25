@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../../services/user.service';
+import { UserDto } from '../../models/user.service'; 
 
 @Component({
   selector: 'app-login',
@@ -9,20 +12,50 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   currentForm: 'login' | 'register' | 'forgot' = 'login';
   passwordHidden: boolean = true;
-  fullname: string = '';
-  email: string = '';
-  confirmEmail: string = '';
-  password: string = '';
-  confirmPassword: string = '';
-  username: string = ''; 
-  remember: boolean = false;
   isLoading: boolean = false;
+  profileImage: File | null = null;
+  registerForm: FormGroup;
+  loginForm: FormGroup;
+  forgotForm: FormGroup;
 
-  // Propriedades FontAwesome
   faEye = 'eye';
   faEyeSlash = 'eye-slash';
 
-  constructor(private router: Router) { } // Injete o serviço de loading
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private userService: UserService
+  ) {
+    this.registerForm = this.fb.group({
+      primeiroNome: ['', Validators.required],
+      ultimoNome: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      userName: ['', Validators.required],
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required]
+    }, { validator: this.passwordMatchValidator });
+
+    this.loginForm = this.fb.group({
+      userName: ['', [Validators.required]],
+      password: ['', Validators.required],
+      remember: [false]
+    });
+
+    this.forgotForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      confirmEmail: ['', [Validators.required, Validators.email]]
+    });
+  }
+
+  passwordMatchValidator(formGroup: FormGroup) {
+    const password = formGroup.get('password')!.value;
+    const confirmPassword = formGroup.get('confirmPassword')!.value;
+    if (password !== confirmPassword) {
+      formGroup.get('confirmPassword')!.setErrors({ mismatch: true });
+    } else {
+      formGroup.get('confirmPassword')!.setErrors(null);
+    }
+  }
 
   toggleForm(form: 'login' | 'register' | 'forgot') {
     this.currentForm = form;
@@ -37,28 +70,63 @@ export class LoginComponent {
     this.currentForm = form;
   }
 
-  submitForm(formType: 'login' | 'register' | 'forgot', form: any) {
-    if (form.valid) {
-      console.log('Formulário válido. Enviando...');
+  submitForm(formType: 'login' | 'register' | 'forgot') {
+    let form: FormGroup | undefined;
+    if (formType === 'login') {
+      form = this.loginForm;
+    } else if (formType === 'register') {
+      form = this.registerForm;
+    } else if (formType === 'forgot') {
+      form = this.forgotForm;
+    }
 
-      setTimeout(() => {
-        if (formType === 'register' || formType === 'forgot') {
-          this.currentForm = 'login';
-          this.clearFields();
-        } else if (formType === 'login') {
-          this.router.navigate(['/home']);
-          this.clearFields();
-        }
-      }, 2000); // Simulação de tempo de processamento
+    if (form && form.valid) {
+      if (formType === 'register') {
+        const user: UserDto = {
+          userName: this.registerForm.get('userName')!.value,
+          email: this.registerForm.get('email')!.value,
+          password: this.registerForm.get('password')!.value,
+          primeiroNome: this.registerForm.get('primeiroNome')!.value,
+          ultimoNome: this.registerForm.get('ultimoNome')!.value
+        };
+
+        console.log('User Data:', user);
+
+        this.userService.register(user).subscribe((response: any) => {
+          console.log('Usuário registrado com sucesso', response);
+          this.navigateTo('login');
+        }, (error: any) => {
+          console.error('Erro ao registrar o usuário', error);
+        });
+      } else if (formType === 'login') {
+        const credentials = {
+          userName: this.loginForm.get('userName')!.value,
+          password: this.loginForm.get('password')!.value
+        };
+        this.userService.login(credentials).subscribe((response: any) => {
+          console.log('Usuário logado com sucesso', response);
+          // Adicione lógica de navegação após o login bem-sucedido
+        }, (error: any) => {
+          console.error('Erro ao fazer login', error);
+        });
+      } else if (formType === 'forgot') {
+        // Implementar lógica de recuperação de senha aqui
+        console.log('Recuperando senha para:', form.value);
+      }
+    }
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+      this.profileImage = input.files[0];
     }
   }
 
   clearFields() {
-    this.fullname = '';
-    this.email = '';
-    this.confirmEmail = '';
-    this.password = '';
-    this.confirmPassword = '';
-    this.username = '';
+    this.registerForm.reset();
+    this.loginForm.reset();
+    this.forgotForm.reset();
+    this.profileImage = null;
   }
 }

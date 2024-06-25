@@ -4,19 +4,17 @@
       <div class="text-center mb-4">
         <img src="../../../assets/logoCodeQuest.svg" alt="Logo" width="300">
       </div>
-      <form *ngIf="currentForm === 'login'" (ngSubmit)="submitForm('login', loginForm)" #loginForm="ngForm" id="login">
-        <div class="d-flex justify-content-center mb-3">
-          <button type="button" class="btn btn-primary mx-2" (click)="navigateTo('login')">Entrar</button>
-          <button type="button" class="btn btn-secondary mx-2" (click)="navigateTo('register')">Cadastrar</button>
-        </div>
+
+      <!-- Formulário de Login -->
+      <form *ngIf="currentForm === 'login'" (ngSubmit)="submitForm('login')" [formGroup]="loginForm">
         <div class="mb-3">
-          <input type="email" class="form-control" name="username" placeholder="E-mail ou usuário" required [(ngModel)]="username">
-          <div *ngIf="loginForm.controls['username']?.invalid && (loginForm.controls['username']?.dirty || loginForm.controls['username']?.touched)" class="text-danger">
+          <input type="text" class="form-control" placeholder="E-mail ou usuário" formControlName="userName" required>
+          <div *ngIf="loginForm.controls['userName']?.invalid && (loginForm.controls['userName']?.dirty || loginForm.controls['userName']?.touched)" class="text-danger">
             E-mail ou usuário é obrigatório.
           </div>
         </div>
         <div class="mb-3 input-group">
-          <input type="password" class="form-control" placeholder="Senha" [type]="passwordHidden ? 'password' : 'text'" name="password" required [(ngModel)]="password">
+          <input type="password" class="form-control" placeholder="Senha" [type]="passwordHidden ? 'password' : 'text'" formControlName="password" required>
           <fa-icon 
             class="fa-icon" 
             [icon]="passwordHidden ? faEye : faEyeSlash" 
@@ -29,9 +27,9 @@
         </div>
         <div class="d-flex justify-content-between mb-3">
           <div>
-            <input type="checkbox" name="remember" [(ngModel)]="remember"> Lembrar-me
+            <input type="checkbox" formControlName="remember"> Lembrar-me
           </div>
-          <a routerLink="" (click)="navigateTo('forgot') ">Esqueceu a senha?</a>
+          <a routerLink="" (click)="navigateTo('forgot')">Esqueceu a senha?</a>
         </div>
         <button type="submit" class="btn btn-primary btn-block mb-3" [disabled]="isLoading">
           <ng-container *ngIf="!isLoading; else loadingTemplate">Entrar</ng-container>
@@ -39,24 +37,42 @@
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Carregando...
           </ng-template>
         </button>
+        <button type="button" class="btn btn-primary btn-block mb-3" (click)="navigateTo('register')">
+          <ng-container *ngIf="!isLoading; else loadingTemplate">Cadastrar</ng-container>
+          <ng-template #loadingTemplate>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Carregando...
+          </ng-template>
+        </button>
       </form>
 
       <!-- Formulário de Cadastro -->
-      <form *ngIf="currentForm === 'register'" (ngSubmit)="submitForm('register', registerForm)" #registerForm="ngForm">
+      <form *ngIf="currentForm === 'register'" (ngSubmit)="submitForm('register')" [formGroup]="registerForm">
         <div class="mb-3">
-          <input type="text" class="form-control" placeholder="Nome Completo" name="fullname" required [(ngModel)]="fullname">
-          <div *ngIf="registerForm.controls['fullname']?.invalid && (registerForm.controls['fullname']?.dirty || registerForm.controls['fullname']?.touched)" class="text-danger">
-            O nome completo é obrigatório.
+          <input type="text" class="form-control" placeholder="Primeiro Nome" formControlName="primeiroNome" required>
+          <div *ngIf="registerForm.controls['primeiroNome']?.invalid && (registerForm.controls['primeiroNome']?.dirty || registerForm.controls['primeiroNome']?.touched)" class="text-danger">
+            O primeiro nome é obrigatório.
           </div>
         </div>
         <div class="mb-3">
-          <input type="email" class="form-control" placeholder="E-mail" name="email" required [(ngModel)]="email">
+          <input type="text" class="form-control" placeholder="Último Nome" formControlName="ultimoNome" required>
+          <div *ngIf="registerForm.controls['ultimoNome']?.invalid && (registerForm.controls['ultimoNome']?.dirty || registerForm.controls['ultimoNome']?.touched)" class="text-danger">
+            O último nome é obrigatório.
+          </div>
+        </div>
+        <div class="mb-3">
+          <input type="email" class="form-control" placeholder="E-mail" formControlName="email" required>
           <div *ngIf="registerForm.controls['email']?.invalid && (registerForm.controls['email']?.dirty || registerForm.controls['email']?.touched)" class="text-danger">
             E-mail válido é obrigatório.
           </div>
         </div>
+        <div class="mb-3">
+          <input type="text" class="form-control" placeholder="Usuário" formControlName="userName" required>
+          <div *ngIf="registerForm.controls['userName']?.invalid && (registerForm.controls['userName']?.dirty || registerForm.controls['userName']?.touched)" class="text-danger">
+            O usuário é obrigatório.
+          </div>
+        </div>
         <div class="mb-3 input-group">
-          <input type="password" class="form-control" placeholder="Senha" [type]="passwordHidden ? 'password' : 'text'" name="password" required [(ngModel)]="password">
+          <input type="password" class="form-control" placeholder="Senha" [type]="passwordHidden ? 'password' : 'text'" formControlName="password" required>
           <fa-icon 
             class="fa-icon" 
             [icon]="passwordHidden ? faEye : faEyeSlash" 
@@ -68,10 +84,14 @@
           A senha é obrigatória.
         </div>
         <div class="mb-3">
-          <input type="password" class="form-control" placeholder="Confirmar Senha" name="confirmPassword" required [(ngModel)]="confirmPassword" appCompareTo="password">
+          <input type="password" class="form-control" placeholder="Confirmar Senha" formControlName="confirmPassword" required>
           <div *ngIf="registerForm.controls['confirmPassword']?.invalid && (registerForm.controls['confirmPassword']?.dirty || registerForm.controls['confirmPassword']?.touched)" class="text-danger">
             As senhas devem coincidir.
           </div>
+        </div>
+        <div class="mb-3">
+          <label for="profileImage" class="form-label">Imagem de Perfil</label>
+          <input type="file" class="form-control" id="profileImage" (change)="onFileSelected($event)">
         </div>
         <button type="submit" class="btn btn-primary btn-block mb-3" [disabled]="isLoading">
           <ng-container *ngIf="!isLoading; else loadingTemplate">Cadastrar</ng-container>
@@ -85,15 +105,15 @@
       </form>
 
       <!-- Formulário de Esqueci a Senha -->
-      <form *ngIf="currentForm === 'forgot'" (ngSubmit)="submitForm('forgot', forgotForm)" #forgotForm="ngForm">
+      <form *ngIf="currentForm === 'forgot'" (ngSubmit)="submitForm('forgot')" [formGroup]="forgotForm">
         <div class="mb-3">
-          <input type="email" class="form-control" placeholder="E-mail" name="email" required [(ngModel)]="email">
+          <input type="email" class="form-control" placeholder="E-mail" formControlName="email" required>
           <div *ngIf="forgotForm.controls['email']?.invalid && (forgotForm.controls['email']?.dirty || forgotForm.controls['email']?.touched)" class="text-danger">
             E-mail válido é obrigatório.
           </div>
         </div>
         <div class="mb-3">
-          <input type="email" class="form-control" placeholder="Confirmar E-mail" name="confirmEmail" required [(ngModel)]="confirmEmail" appCompareTo="email">
+          <input type="email" class="form-control" placeholder="Confirmar E-mail" formControlName="confirmEmail" required>
           <div *ngIf="forgotForm.controls['confirmEmail']?.invalid && (forgotForm.controls['confirmEmail']?.dirty || forgotForm.controls['confirmEmail']?.touched)" class="text-danger">
             Os e-mails devem coincidir.
           </div>
