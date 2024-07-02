@@ -49,10 +49,10 @@
     <div class="modal-body">
       <h6>Nível: {{ selectedTopic?.level }}</h6>
       <div *ngIf="selectedTopic">
-        <div *ngFor="let question of selectedTopic.questions">
-          <h5>{{ question.text }}</h5>
-          <div *ngFor="let option of question.options" [ngClass]="{'incorrect': showFeedback && selectedQuestion === question && selectedOption === option && !isCorrectOption(question, option)}">
-            <input class="form-check-input" type="radio" name="question{{ question.id }}" [value]="option" (change)="selectOption(question, option)">
+        <div *ngFor="let question of selectedTopic.questoes">
+          <h5>{{ question.titulo }}</h5>
+          <div *ngFor="let option of getOptions(question)" [ngClass]="{'incorrect': showFeedback && selectedQuestion === question && selectedOption === option && !isCorrectOption(question, option)}">
+            <input class="form-check-input" type="radio" name="question{{ question.questaoId }}" [value]="option" (change)="selectOption(question, option)">
             <label class="form-check-label">{{ option }}</label>
           </div>
         </div>

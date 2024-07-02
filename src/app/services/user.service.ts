@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserDto } from '../models/user.service'; // Certifique-se de que o caminho está correto
+import { tap } from 'rxjs/operators';
+import { UserDto } from '../models/user.service';  // Certifique-se de que o caminho está correto
+import { AuthResponseDto } from '../models/auth-response.dto'; // Importe a nova interface
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +18,15 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/Register`, user, { headers });
   }
 
-  login(credentials: any): Observable<any> {
+  login(credentials: any): Observable<AuthResponseDto> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(`${this.apiUrl}/Login`, credentials, { headers });
+    return this.http.post<AuthResponseDto>(`${this.apiUrl}/Login`, credentials, { headers }).pipe(
+      tap(response => {
+        if (response && response.token) {
+          localStorage.setItem('authToken', response.token);
+        }
+      })
+    );
   }
 
   getUser(): Observable<any> {
