@@ -25,6 +25,9 @@
         <div *ngIf="loginForm.controls['password']?.invalid && (loginForm.controls['password']?.dirty || loginForm.controls['password']?.touched)" class="text-danger mb-3">
           A senha é obrigatória.
         </div>
+        <div *ngIf="loginError" class="text-danger">
+          {{ loginError }}
+        </div>
         <div class="d-flex justify-content-between mb-3">
           <div>
             <input type="checkbox" formControlName="remember"> Lembrar-me
@@ -44,6 +47,9 @@
           </ng-template>
         </button>
       </form>
+
+
+
 
       <!-- Formulário de Cadastro -->
       <form *ngIf="currentForm === 'register'" (ngSubmit)="submitForm('register')" [formGroup]="registerForm">
@@ -103,6 +109,10 @@
           Já é um membro? <a href="#" (click)="navigateTo('login')">Entrar</a>
         </div>
       </form>
+
+
+
+
 
       <!-- Formulário de Esqueci a Senha -->
       <form *ngIf="currentForm === 'forgot'" (ngSubmit)="submitForm('forgot')" [formGroup]="forgotForm">

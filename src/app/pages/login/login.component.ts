@@ -17,6 +17,7 @@ export class LoginComponent {
   registerForm: FormGroup;
   loginForm: FormGroup;
   forgotForm: FormGroup;
+  loginError: string | null = null;
 
   faEye = 'eye';
   faEyeSlash = 'eye-slash';
@@ -81,6 +82,7 @@ export class LoginComponent {
     }
 
     if (form && form.valid) {
+      this.isLoading = true; // Iniciar carregamento
       if (formType === 'register') {
         const user: UserDto = {
           userName: this.registerForm.get('userName')!.value,
@@ -90,13 +92,13 @@ export class LoginComponent {
           ultimoNome: this.registerForm.get('ultimoNome')!.value
         };
 
-        console.log('User Data:', user);
-
         this.userService.register(user).subscribe((response: any) => {
           console.log('Usuário registrado com sucesso', response);
+          this.isLoading = false; // Parar carregamento
           this.navigateTo('login');
         }, (error: any) => {
           console.error('Erro ao registrar o usuário', error);
+          this.isLoading = false; // Parar carregamento
         });
       } else if (formType === 'login') {
         const credentials = {
@@ -105,9 +107,13 @@ export class LoginComponent {
         };
         this.userService.login(credentials).subscribe((response: any) => {
           console.log('Usuário logado com sucesso', response);
-          // Adicione lógica de navegação após o login bem-sucedido
+          localStorage.setItem('authToken', response.token); // Armazenar o token no localStorage
+          this.isLoading = false; 
+          this.router.navigate(['/home']);
         }, (error: any) => {
           console.error('Erro ao fazer login', error);
+          this.isLoading = false; // Parar carregamento
+          this.loginError = 'Usuário ou senha incorretos';
         });
       } else if (formType === 'forgot') {
         // Implementar lógica de recuperação de senha aqui

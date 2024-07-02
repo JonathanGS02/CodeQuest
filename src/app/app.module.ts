@@ -10,11 +10,13 @@ import { NavComponent } from './component/nav/nav.component';
 import { FooterComponent } from './component/footer/footer.component';
 import { MinhaContaComponent } from './pages/minha-conta/minha-conta.component';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { LoaderModule } from './loader/loader.module'; 
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoadingComponent } from './loading/loading.component';
+import { LoadingService } from './services/loading.service';
+import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { UserService } from './services/user.service';
-import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { HttpClientModule } from '@angular/common/http';
     FooterComponent,
     MinhaContaComponent,
     LoginComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,17 +36,18 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     NgbModule,
     FontAwesomeModule,
-    LoaderModule,
     HttpClientModule,
   ],
   providers: [
     UserService,
+    LoadingService,
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     provideClientHydration()
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor(library: FaIconLibrary) {
-    library.addIcons(faEye, faEyeSlash);
+    library.addIcons(faEye, faEyeSlash, faSpinner);
   }
 }
