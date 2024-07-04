@@ -24,15 +24,33 @@ export interface Question {
   userId: number;
   user: UserDto;
   numero: number;
-  correctOption: string;
+  exp: string;
+  questaoTopico: QuestaoTopico;
+  
 }
 
-export interface Topic {
-  topicId: string;
-  title: string;
-  level: number;
-  unlocked: boolean;
-  questoes: Question[];
+export interface QuestaoTopico {
+  questaoTopicoId: string;
+  questaoId: string;
+  questao: Question;
+  topicoId: string;
+  topico: Topico;
+  numero: number;
+  userId: number;
+  user: UserDto;
+}
+
+export interface Topico {
+
+  topicoId: string;
+  Nivel: number;
+  QtdQuestoes: number;
+  UserId: string;
+  user: UserDto;
+  Numero: number;
+  questoes?: Question[];  // Opcional
+  questaoTopicos?: QuestaoTopico[];  // Opcional
+  unlocked?: boolean;
 }
 
 @Injectable({
@@ -59,9 +77,9 @@ export class ApiService {
     return this.http.get<Question[]>(`${this.apiUrl}/Questao`, { headers: this.getHeaders() });
   }
 
-  getTopics(): Observable<Topic[]> {
+  getTopics(): Observable<Topico[]> {
     console.log('Fetching topics...');
-    return this.http.get<Topic[]>(`${this.apiUrl}/Topico`, { headers: this.getHeaders() });
+    return this.http.get<Topico[]>(`${this.apiUrl}/Topico`, { headers: this.getHeaders() });
   }
 
   getQuestionById(id: string): Observable<Question> {
@@ -69,9 +87,9 @@ export class ApiService {
     return this.http.get<Question>(`${this.apiUrl}/Questao/${id}`, { headers: this.getHeaders() });
   }
 
-  getTopicById(id: string): Observable<Topic> {
+  getTopicById(id: string): Observable<Topico> {
     console.log(`Fetching topic by ID: ${id}`);
-    return this.http.get<Topic>(`${this.apiUrl}/Topico/${id}`, { headers: this.getHeaders() });
+    return this.http.get<Topico>(`${this.apiUrl}/Topico/${id}`, { headers: this.getHeaders() });
   }
 
   createQuestion(question: Question): Observable<Question> {
@@ -79,9 +97,9 @@ export class ApiService {
     return this.http.post<Question>(`${this.apiUrl}/Questao`, question, { headers: this.getHeaders() });
   }
 
-  createTopic(topic: Topic): Observable<Topic> {
+  createTopic(topic: Topico): Observable<Topico> {
     console.log('Creating topic...', topic);
-    return this.http.post<Topic>(`${this.apiUrl}/Topico`, topic, { headers: this.getHeaders() });
+    return this.http.post<Topico>(`${this.apiUrl}/Topico`, topic, { headers: this.getHeaders() });
   }
 
   updateQuestion(id: string, question: Question): Observable<Question> {
@@ -89,9 +107,9 @@ export class ApiService {
     return this.http.put<Question>(`${this.apiUrl}/Questao/${id}`, question, { headers: this.getHeaders() });
   }
 
-  updateTopic(id: string, topic: Topic): Observable<Topic> {
+  updateTopic(id: string, topic: Topico): Observable<Topico> {
     console.log(`Updating topic ID: ${id}`, topic);
-    return this.http.put<Topic>(`${this.apiUrl}/Topico/${id}`, topic, { headers: this.getHeaders() });
+    return this.http.put<Topico>(`${this.apiUrl}/Topico/${id}`, topic, { headers: this.getHeaders() });
   }
 
   deleteQuestion(id: string): Observable<void> {

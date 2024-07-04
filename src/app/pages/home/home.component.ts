@@ -1,7 +1,6 @@
-import { Component, TemplateRef, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router';
-import { ApiService, Topic, Question } from '../../services/api.service';  // Certifique-se de que o caminho está correto
+import { ApiService, Topico, Question, QuestaoTopico } from '../../services/api.service';
 
 @Component({
   selector: 'app-home',
@@ -9,25 +8,39 @@ import { ApiService, Topic, Question } from '../../services/api.service';  // Ce
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  topics: Topic[] = [];
-  additionalTopics: Topic[] = [];
-  moreTopics: Topic[] = [];
+  topics: Topico[] = [];
+  additionalTopics: Topico[] = [];
+  moreTopics: Topico[] = [];
 
-  selectedTopic: Topic | null = null;
+  selectedTopic: Topico | null = null;
   selectedQuestion: Question | null = null;
   selectedOption: string | null = null;
   showFeedback: boolean = false;
 
-  constructor(private modalService: NgbModal, private router: Router, private apiService: ApiService) {}
+  constructor(private modalService: NgbModal, private apiService: ApiService) {}
 
   ngOnInit(): void {
     console.log('HomeComponent initialized');
     this.apiService.getTopics().subscribe({
       next: (topics) => {
         console.log('Topics loaded:', topics);
-        this.topics = topics.filter(t => t.level <= 6); // Ajuste os níveis conforme necessário
-        this.additionalTopics = topics.filter(t => t.level > 6 && t.level <= 12);
-        this.moreTopics = topics.filter(t => t.level > 12);
+        topics.forEach(topic => {
+          console.log('Processing topic:', topic);
+          if (topic.questaoTopicos) {
+            topic.questoes = topic.questaoTopicos.map(qt => qt.questao);
+          }
+          // Adicione um valor padrão para Nivel se não estiver definido
+          if (topic.Nivel === undefined || topic.Nivel === null) {
+            topic.Nivel = 1; // ou outro valor padrão apropriado
+          }
+          console.log('Processed topic:', topic);
+        });
+        this.topics = topics.filter(t => t.Nivel !== undefined && t.Nivel <= 6);
+        this.additionalTopics = topics.filter(t => t.Nivel !== undefined && t.Nivel > 6 && t.Nivel <= 12);
+        this.moreTopics = topics.filter(t => t.Nivel !== undefined && t.Nivel > 12);
+        console.log('Filtered topics:', this.topics);
+        console.log('Filtered additionalTopics:', this.additionalTopics);
+        console.log('Filtered moreTopics:', this.moreTopics);
       },
       error: (err) => {
         console.error('Failed to load topics:', err);
@@ -35,13 +48,14 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  isTopicUnlocked(topic: Topic): boolean {
-    return topic.unlocked;
+  isTopicUnlocked(topic: Topico): boolean {
+    return true; // Ajuste conforme a lógica de desbloqueio
   }
 
-  openTopicModal(content: TemplateRef<any>, topic: Topic): void {
+  openTopicModal(content: TemplateRef<any>, topic: Topico): void {
     if (this.isTopicUnlocked(topic)) {
       this.selectedTopic = topic;
+      console.log('Selected topic:', this.selectedTopic);
       this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
     }
   }
@@ -52,7 +66,12 @@ export class HomeComponent implements OnInit {
   }
 
   isCorrectOption(question: Question, option: string): boolean {
-    return option === question.correctOption;
+    return (question.perguntaCorreta1 && option === question.pergunta1) ||
+           (question.perguntaCorreta2 && option === question.pergunta2) ||
+           (question.perguntaCorreta3 && option === question.pergunta3) ||
+           (question.perguntaCorreta4 && option === question.pergunta4) ||
+           (question.perguntaCorreta5 && option === question.pergunta5) ||
+           (question.perguntaCorreta6 && option === question.pergunta6);
   }
 
   completeTopic(): void {
@@ -61,11 +80,11 @@ export class HomeComponent implements OnInit {
       this.triggerVibration();
     } else if (this.selectedQuestion && this.selectedOption && this.isCorrectOption(this.selectedQuestion, this.selectedOption)) {
       if (this.selectedTopic) {
-        const nextTopic = this.topics.find(t => t.level === this.selectedTopic!.level + 1) ||
-                          this.additionalTopics.find(t => t.level === this.selectedTopic!.level + 1) ||
-                          this.moreTopics.find(t => t.level === this.selectedTopic!.level + 1);
+        const nextTopic = this.topics.find(t => t.Nivel === this.selectedTopic!.Nivel! + 1) ||
+                          this.additionalTopics.find(t => t.Nivel === this.selectedTopic!.Nivel! + 1) ||
+                          this.moreTopics.find(t => t.Nivel === this.selectedTopic!.Nivel! + 1);
         if (nextTopic) {
-          nextTopic.unlocked = true;
+          // Adicione a lógica para desbloquear o próximo tópico aqui
         }
         this.modalService.dismissAll();
       }

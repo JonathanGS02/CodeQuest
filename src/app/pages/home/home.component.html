@@ -8,7 +8,7 @@
       <div class="topic-level">
         <div class="topic-card" *ngFor="let topic of topics" [class.disabled]="!isTopicUnlocked(topic)" (click)="openTopicModal(content, topic)">
           <i class="fas fa-book topic-icon"></i>
-          <p>{{ topic.title }}</p>
+          <p *ngIf="topic.questoes && topic.questoes.length > 0">{{ topic.questoes[0].titulo }}</p>
         </div>
       </div>
     </div>
@@ -21,7 +21,7 @@
       <div class="topic-level">
         <div class="topic-card" *ngFor="let topic of additionalTopics" [class.disabled]="!isTopicUnlocked(topic)" (click)="openTopicModal(content, topic)">
           <i class="fas fa-laptop-code topic-icon"></i>
-          <p>{{ topic.title }}</p>
+          <p *ngIf="topic.questoes && topic.questoes.length > 0">{{ topic.questoes[0].titulo }}</p>
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@
       <div class="topic-level">
         <div class="topic-card" *ngFor="let topic of moreTopics" [class.disabled]="!isTopicUnlocked(topic)" (click)="openTopicModal(content, topic)">
           <i class="fas fa-book-open topic-icon"></i>
-          <p>{{ topic.title }}</p>
+          <p *ngIf="topic.questoes && topic.questoes.length > 0">{{ topic.questoes[0].titulo }}</p>
         </div>
       </div>
     </div>
@@ -43,11 +43,11 @@
   <!-- Modal -->
   <ng-template #content let-modal>
     <div class="modal-header">
-      <h5 class="modal-title" id="modal-basic-title">{{ selectedTopic?.title }}</h5>
+      <h5 class="modal-title" id="modal-basic-title">{{ selectedTopic?.questoes?.[0]?.titulo }}</h5>
       <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">
-      <h6>Nível: {{ selectedTopic?.level }}</h6>
+      <h6>Nível: {{ selectedTopic?.Nivel }}</h6>
       <div *ngIf="selectedTopic">
         <div *ngFor="let question of selectedTopic.questoes">
           <h5>{{ question.titulo }}</h5>
