@@ -14,7 +14,11 @@ export class MinhaContaComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getUser().subscribe(
       (data: any) => {
-        this.user = data;
+        if (data) {
+          this.user = data;
+        } else {
+          this.userService.fetchUser();
+        }
       },
       (error: any) => {
         console.error('Erro ao obter dados do usuário', error);

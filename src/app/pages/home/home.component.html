@@ -6,7 +6,7 @@
 
     <div class="col-md-12 mb-4">
       <div class="topic-level">
-        <div class="topic-card" *ngFor="let topic of topics" [class.disabled]="!isTopicUnlocked(topic)" (click)="openTopicModal(content, topic)">
+        <div class="topic-card" *ngFor="let topic of introductionTopics" [class.disabled]="!isTopicUnlocked(topic)" (click)="isTopicUnlocked(topic) ? openTopicModal(content, topic) : null">
           <i class="fas fa-book topic-icon"></i>
           <p *ngIf="topic.questoes && topic.questoes.length > 0">{{ topic.questoes[0].titulo }}</p>
         </div>
@@ -19,7 +19,7 @@
 
     <div class="col-md-12 mb-4">
       <div class="topic-level">
-        <div class="topic-card" *ngFor="let topic of additionalTopics" [class.disabled]="!isTopicUnlocked(topic)" (click)="openTopicModal(content, topic)">
+        <div class="topic-card" *ngFor="let topic of controlStructureTopics" [class.disabled]="!isTopicUnlocked(topic)" (click)="isTopicUnlocked(topic) ? openTopicModal(content, topic) : null">
           <i class="fas fa-laptop-code topic-icon"></i>
           <p *ngIf="topic.questoes && topic.questoes.length > 0">{{ topic.questoes[0].titulo }}</p>
         </div>
@@ -32,7 +32,7 @@
 
     <div class="col-md-12 mb-4">
       <div class="topic-level">
-        <div class="topic-card" *ngFor="let topic of moreTopics" [class.disabled]="!isTopicUnlocked(topic)" (click)="openTopicModal(content, topic)">
+        <div class="topic-card" *ngFor="let topic of functionsTopics" [class.disabled]="!isTopicUnlocked(topic)" (click)="isTopicUnlocked(topic) ? openTopicModal(content, topic) : null">
           <i class="fas fa-book-open topic-icon"></i>
           <p *ngIf="topic.questoes && topic.questoes.length > 0">{{ topic.questoes[0].titulo }}</p>
         </div>
@@ -42,25 +42,27 @@
 
   <!-- Modal -->
   <ng-template #content let-modal>
-    <div class="modal-header">
-      <h5 class="modal-title" id="modal-basic-title">{{ selectedTopic?.questoes?.[0]?.titulo }}</h5>
-      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-    </div>
-    <div class="modal-body">
-      <h6>Nível: {{ selectedTopic?.Nivel }}</h6>
-      <div *ngIf="selectedTopic">
-        <div *ngFor="let question of selectedTopic.questoes">
-          <h5>{{ question.titulo }}</h5>
-          <div *ngFor="let option of getOptions(question)" [ngClass]="{'incorrect': showFeedback && selectedQuestion === question && selectedOption === option && !isCorrectOption(question, option)}">
-            <input class="form-check-input" type="radio" name="question{{ question.questaoId }}" [value]="option" (change)="selectOption(question, option)">
-            <label class="form-check-label">{{ option }}</label>
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-basic-title">{{ selectedQuestion?.titulo }}</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+          <h6>Nível: {{ selectedTopic?.nivel }}</h6>
+          <div *ngIf="selectedQuestion">
+            <h5>{{ selectedQuestion.titulo }}</h5>
+            <div *ngFor="let option of getOptions(selectedQuestion)" [ngClass]="{'incorrect': showFeedback && selectedQuestion === selectedQuestion && selectedOption === option && !isCorrectOption(selectedQuestion, option)}">
+              <input class="form-check-input" type="radio" name="question{{ selectedQuestion.questaoId }}" [value]="option" (change)="selectOption(selectedQuestion, option)">
+              <label class="form-check-label">{{ option }}</label>
+            </div>
           </div>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Close click')">Fechar</button>
+          <button type="button" class="btn btn-primary" (click)="completeTopic()">Concluir</button>
+        </div>
       </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Close click')">Fechar</button>
-      <button type="button" class="btn btn-primary" (click)="completeTopic()">Concluir</button>
     </div>
   </ng-template>
 </div>

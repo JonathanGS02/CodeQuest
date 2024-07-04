@@ -43,7 +43,7 @@ export interface QuestaoTopico {
 export interface Topico {
 
   topicoId: string;
-  Nivel: number;
+  nivel: number;
   QtdQuestoes: number;
   UserId: string;
   user: UserDto;
