@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
-import { UserDto } from '../../models/user.service'; 
+import { UserDto } from '../../models/user.service';
 
 @Component({
   selector: 'app-login',
@@ -85,11 +85,18 @@ export class LoginComponent {
       this.isLoading = true; // Iniciar carregamento
       if (formType === 'register') {
         const user: UserDto = {
+          id: 0, // ou outro valor padrão
+          titulo: '', // ou outro valor padrão
           userName: this.registerForm.get('userName')!.value,
           email: this.registerForm.get('email')!.value,
           password: this.registerForm.get('password')!.value,
           primeiroNome: this.registerForm.get('primeiroNome')!.value,
-          ultimoNome: this.registerForm.get('ultimoNome')!.value
+          ultimoNome: this.registerForm.get('ultimoNome')!.value,
+          phoneNumber: '', // ou outro valor padrão
+          funcao: '', // ou outro valor padrão
+          descricao: '', // ou outro valor padrão
+          token: '', // ou outro valor padrão
+          imagemURL: '' // ou outro valor padrão
         };
 
         this.userService.register(user).subscribe((response: any) => {

@@ -17,6 +17,8 @@ export class HomeComponent implements OnInit {
   selectedQuestion: Question | null = null;
   selectedOption: string | null = null;
   showFeedback: boolean = false;
+  showSuccessModal: boolean = false; // Controle para o pop-up de sucesso
+  acquiredXp: number = 0; // XP adquirido na resposta correta
 
   userLevel: number = 1; // Nível inicial do usuário
   userXp: number = 0; // XP inicial do usuário
@@ -25,29 +27,15 @@ export class HomeComponent implements OnInit {
   constructor(private modalService: NgbModal, private apiService: ApiService, private userService: UserService) {}
 
   ngOnInit(): void {
-    console.log('HomeComponent initialized');
-
     this.apiService.getTopics().subscribe({
       next: (topics) => {
-        console.log('Topics loaded:', topics);
         topics.forEach(topic => {
-          console.log('Processing topic:', topic);
           if (topic.questaoTopicos) {
             topic.questoes = topic.questaoTopicos.map(qt => qt.questao);
           }
 
-          if(topic.nivel == this.userLevel){
-            topic.unlocked = true;
-          }else{
-            topic.unlocked = false
-          }
-
-          console.log(`Topic Nivel: ${topic.nivel}, User Level: ${this.userLevel}`);
-          // Inicializa o status de desbloqueio do tópico
           topic.unlocked = topic.nivel <= this.userLevel;
-          console.log(`Topic ${topic.topicoId} unlocked status: ${topic.unlocked}`);
 
-          // Separar os tópicos em categorias
           if (topic.questoes?.some(q => q.titulo.includes('linguagem de programação') || q.titulo.includes('Componentes principais de um programa'))) {
             this.introductionTopics.push(topic);
           } else if (topic.questoes?.some(q => q.titulo.includes('estrutura de controle'))) {
@@ -56,11 +44,7 @@ export class HomeComponent implements OnInit {
             this.functionsTopics.push(topic);
           }
         });
-        console.log('Introduction topics:', this.introductionTopics);
-        console.log('Control Structure topics:', this.controlStructureTopics);
-        console.log('Functions topics:', this.functionsTopics);
 
-        // Atualiza o status de desbloqueio dos tópicos após carregá-los
         this.updateTopicUnlockStatus();
       },
       error: (err) => {
@@ -70,8 +54,7 @@ export class HomeComponent implements OnInit {
   }
 
   isTopicUnlocked(topic: Topico): boolean {
-    console.log(`Checking if topic ${topic.topicoId} is unlocked: ${topic.unlocked}`);
-    return topic.unlocked ?? false;  // Verifica se o tópico está desbloqueado, garantindo que `unlocked` seja um booleano
+    return topic.unlocked ?? false;
   }
 
   openTopicModal(content: TemplateRef<any>, topic: Topico): void {
@@ -80,7 +63,6 @@ export class HomeComponent implements OnInit {
       if (this.selectedTopic.questoes && this.selectedTopic.questoes.length > 0) {
         this.selectedQuestion = this.getRandomQuestion(this.selectedTopic.questoes);
       }
-      console.log('Selected topic:', this.selectedTopic);
       this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
     }
   }
@@ -93,6 +75,7 @@ export class HomeComponent implements OnInit {
   selectOption(question: Question, option: string): void {
     this.selectedQuestion = question;
     this.selectedOption = option;
+    this.showFeedback = false; // Resetar o feedback ao selecionar uma nova opção
   }
 
   isCorrectOption(question: Question, option: string): boolean {
@@ -104,42 +87,32 @@ export class HomeComponent implements OnInit {
            (question.perguntaCorreta6 && option === question.pergunta6);
   }
 
-  completeTopic(): void {
+  completeTopic(successModal: TemplateRef<any>): void {
     this.showFeedback = true;
     if (this.selectedQuestion && this.selectedOption && !this.isCorrectOption(this.selectedQuestion, this.selectedOption)) {
       this.triggerVibration();
     } else if (this.selectedQuestion && this.selectedOption && this.isCorrectOption(this.selectedQuestion, this.selectedOption)) {
-      if (this.selectedQuestion) {
-        this.userXp += Number(this.selectedQuestion.exp); // Adiciona XP da questão ao XP do usuário e garante que seja número
-        console.log('User XP updated to:', this.userXp);
-
-        // Verifica se o usuário atingiu a XP necessária para subir de nível
-        while (this.userXp >= this.xpForNextLevel) {
-          this.userLevel++;
-          this.userXp -= this.xpForNextLevel;
-          console.log('User level updated to:', this.userLevel);
-
-          // Atualiza o status de desbloqueio dos tópicos
-          this.updateTopicUnlockStatus();
-        }
-
-        this.modalService.dismissAll();
+      this.acquiredXp = Number(this.selectedQuestion.exp);
+      this.userXp += this.acquiredXp;
+      while (this.userXp >= this.xpForNextLevel) {
+        this.userLevel++;
+        this.userXp -= this.xpForNextLevel;
+        this.updateTopicUnlockStatus();
       }
+      this.modalService.dismissAll();
+      this.modalService.open(successModal, { ariaLabelledBy: 'modal-success-title' }); // Mostrar o pop-up de sucesso
     }
   }
 
   updateTopicUnlockStatus(): void {
     this.introductionTopics.forEach(topic => {
       topic.unlocked = topic.nivel <= this.userLevel;
-      console.log(`Updated topic ${topic.topicoId} unlocked status to: ${topic.unlocked}`);
     });
     this.controlStructureTopics.forEach(topic => {
       topic.unlocked = topic.nivel <= this.userLevel;
-      console.log(`Updated topic ${topic.topicoId} unlocked status to: ${topic.unlocked}`);
     });
     this.functionsTopics.forEach(topic => {
       topic.unlocked = topic.nivel <= this.userLevel;
-      console.log(`Updated topic ${topic.topicoId} unlocked status to: ${topic.unlocked}`);
     });
   }
 

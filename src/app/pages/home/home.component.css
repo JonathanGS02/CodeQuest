@@ -81,45 +81,38 @@ h2 {
 }
 
 .modal {
-  --bs-modal-zindex: 1055;
-  --bs-modal-padding: 1rem;
-  --bs-modal-margin: 0.5rem;
-  --bs-modal-bg: var(--bs-body-bg);
-  --bs-modal-border-color: var(--bs-border-color-translucent);
-  --bs-modal-border-width: var(--bs-border-width);
-  --bs-modal-border-radius: var(--bs-border-radius-lg);
-  --bs-modal-box-shadow: var(--bs-box-shadow-sm);
-  --bs-modal-header-padding: 1rem 1rem;
-  --bs-modal-header-border-color: var(--bs-border-color);
-  --bs-modal-header-border-width: var(--bs-border-width);
-  --bs-modal-footer-gap: 0.5rem;
-  --bs-modal-footer-border-color: var(--bs-border-color);
-  --bs-modal-footer-border-width: var(--bs-border-width);
   position: fixed;
   top: 0;
   left: 0;
-  z-index: var(--bs-modal-zindex);
+  z-index: 1055;
   display: none;
-  width: 100%;
+  width: auto !important;
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   outline: 0;
+  background: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
 }
 
 .modal-dialog {
   width: auto;
-  max-width: 90%; /* Largura máxima, ajustável conforme necessário */
+  max-width: 90%;
   margin: 1.75rem auto;
+  border: none; /* Remover borda */
+  padding: 0; /* Remover padding */
 }
 
 .modal-content {
   width: auto;
   max-width: 100%;
+  border: none; /* Remover borda */
+  padding: 0; /* Remover padding */
+  background-color: #fff; /* Fundo branco */
 }
 
 .modal-header, .modal-body, .modal-footer {
   padding: 1rem;
+  border: none; /* Remover borda */
 }
 
 .modal-body h6, .modal-body h5 {
